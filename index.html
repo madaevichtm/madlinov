@@ -253,8 +253,8 @@ function createGreeting(){
             )
         ];
 
-    el.style.left =
-    (15 + Math.random() * 70) + "vw";
+    const safeLeft = 20 + Math.random() * 60;
+el.style.left = safeLeft + "vw";
 
     el.style.top =
         Math.random() * 100 + "vh";
