@@ -1,0 +1,357 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello, Human.</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+canvas{
+    position:fixed;
+    inset:0;
+}
+
+.center{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:min(92%,1200px);
+    text-align:center;
+    z-index:10;
+}
+
+.main{
+    font-size:clamp(2.2rem,8vw,6.5rem);
+    font-weight:900;
+    line-height:1.15;
+    letter-spacing:0.02em;
+
+    background:linear-gradient(
+        90deg,
+        #8ec5ff,
+        #c8b6ff,
+        #ffffff,
+        #c8b6ff,
+        #8ec5ff
+    );
+
+    background-size:300% 300%;
+
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+
+    animation:
+        pulse 5s ease-in-out infinite,
+        glow 12s linear infinite;
+
+    text-shadow:
+        0 0 8px rgba(255,255,255,.15),
+        0 0 20px rgba(180,220,255,.15);
+}
+
+@keyframes glow{
+    0%{
+        background-position:0% 50%;
+    }
+    100%{
+        background-position:100% 50%;
+    }
+}
+
+.sub{
+    margin-top:18px;
+    color:rgba(255,255,255,.55);
+    font-size:clamp(.8rem,2vw,1.05rem);
+    letter-spacing:3px;
+}
+
+.signature{
+    position:fixed;
+    left:50%;
+    bottom:34px;
+    transform:translateX(-50%);
+    text-align:center;
+    color:white;
+    opacity:0;
+    transition:4s;
+    z-index:20;
+    user-select:none;
+}
+
+.signature.show{
+    opacity:.20;
+}
+
+.signature .line1{
+    font-size:12px;
+    letter-spacing:4px;
+}
+
+.signature .line2{
+    margin-top:6px;
+    font-size:11px;
+    letter-spacing:3px;
+}
+
+.greeting{
+    position:absolute;
+    color:white;
+    white-space:nowrap;
+    pointer-events:none;
+    opacity:0;
+    animation:floatUp linear forwards;
+}
+
+@keyframes pulse{
+    0%,100%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.04);
+    }
+}
+
+@keyframes floatUp{
+    0%{
+        opacity:0;
+        transform:translateY(40px);
+    }
+    10%{
+        opacity:.55;
+    }
+    90%{
+        opacity:.55;
+    }
+    100%{
+        opacity:0;
+        transform:translateY(-40px);
+    }
+}
+</style>
+</head>
+<body>
+
+<canvas id="space"></canvas>
+
+<div class="center">
+    <div class="main" id="mainGreeting">Hello, Human!</div>
+    <div class="sub" id="subGreeting">A message to every human on Earth 🌍</div>
+</div>
+
+<div class="signature" id="signature">
+    <div class="line1">[l1sa] madlinov7</div>
+    <div class="line2">MALIKOV D.A</div>
+</div>
+
+<script>
+
+const greetingsByLanguage = {
+    ru: {
+        main: "Привет, человек!",
+        sub: "Послание каждому человеку на Земле 🌍"
+    },
+    en: {
+        main: "Hello, Human!",
+        sub: "A message to every human on Earth 🌍"
+    },
+    zh: {
+        main: "你好，人类！",
+        sub: "来自地球的问候 🌍"
+    },
+    hi: {
+        main: "नमस्ते, मानव!",
+        sub: "पृथ्वी के हर इंसान के लिए 🌍"
+    },
+    ar: {
+        main: "مرحباً أيها الإنسان",
+        sub: "رسالة إلى كل إنسان على الأرض 🌍"
+    },
+    es: {
+        main: "¡Hola, Humano!",
+        sub: "Un mensaje para cada ser humano en la Tierra 🌍"
+    },
+    fr: {
+        main: "Bonjour, Humain !",
+        sub: "Un message pour chaque humain sur Terre 🌍"
+    },
+    de: {
+        main: "Hallo, Mensch!",
+        sub: "Eine Botschaft an jeden Menschen auf der Erde 🌍"
+    },
+    ja: {
+        main: "こんにちは、人間！",
+        sub: "地球上のすべての人へ 🌍"
+    },
+    ko: {
+        main: "안녕하세요, 인간!",
+        sub: "지구의 모든 사람에게 🌍"
+    }
+};
+
+const lang = navigator.language.slice(0,2).toLowerCase();
+
+const selected =
+    greetingsByLanguage[lang] ||
+    greetingsByLanguage.en;
+
+document.getElementById("mainGreeting").textContent =
+    selected.main;
+
+document.getElementById("subGreeting").textContent =
+    selected.sub;
+
+const floatingGreetings = [
+"Привет, человек!",
+"Hello, Human!",
+"你好，人类！",
+"नमस्ते, मानव!",
+"こんにちは、人間！",
+"안녕하세요, 인간!",
+"¡Hola, Humano!",
+"Bonjour, Humain !",
+"Hallo, Mensch!",
+"Ciao, Uomo!",
+"Olá, Humano!",
+"مرحباً أيها الإنسان",
+"שלום, אדם!",
+"Merhaba İnsan!",
+"Habari Mwanadamu",
+"Xin chào con người!",
+"Halo Manusia!",
+"Hello Human 🌍"
+];
+
+function createGreeting(){
+
+    const el = document.createElement("div");
+
+    el.className = "greeting";
+    el.textContent =
+        floatingGreetings[
+            Math.floor(
+                Math.random() *
+                floatingGreetings.length
+            )
+        ];
+
+    el.style.left =
+        Math.random() * 100 + "vw";
+
+    el.style.top =
+        Math.random() * 100 + "vh";
+
+    el.style.fontSize =
+        (12 + Math.random() * 18) + "px";
+
+    el.style.animationDuration =
+        (8 + Math.random() * 8) + "s";
+
+    document.body.appendChild(el);
+
+    setTimeout(()=>{
+        el.remove();
+    },17000);
+}
+
+setInterval(createGreeting,450);
+
+setTimeout(()=>{
+    document
+        .getElementById("signature")
+        .classList
+        .add("show");
+},15000);
+
+const canvas =
+    document.getElementById("space");
+
+const ctx =
+    canvas.getContext("2d");
+
+function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+resize();
+
+window.addEventListener(
+    "resize",
+    resize
+);
+
+const stars = [];
+
+for(let i=0;i<350;i++){
+
+    stars.push({
+        x:Math.random()*window.innerWidth,
+        y:Math.random()*window.innerHeight,
+        r:Math.random()*2,
+        a:Math.random()
+    });
+
+}
+
+function animate(){
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    for(const s of stars){
+
+        ctx.beginPath();
+
+        ctx.arc(
+            s.x,
+            s.y,
+            s.r,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fillStyle =
+            `rgba(255,255,255,${s.a})`;
+
+        ctx.fill();
+
+        s.a +=
+            (Math.random()-0.5)*0.03;
+
+        if(s.a < 0.1) s.a = 0.1;
+        if(s.a > 1) s.a = 1;
+    }
+
+    requestAnimationFrame(
+        animate
+    );
+}
+
+animate();
+
+</script>
+
+</body>
+</html>
+```
